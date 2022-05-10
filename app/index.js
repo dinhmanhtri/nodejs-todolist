@@ -1,18 +1,13 @@
 // import yargs from "yargs"; // ES6
 
 const yargs = require("yargs"); // ES5 ( common js )
-const fs = require('fs');
-const readAllTask = require('./model/task');
-console.log(`Đây là code hay cực kỳ`);
-
-// Tạo lệnh test
-// node app/index.js test
-yargs.command({
-  command: "test",
-  handler: () => {
-    console.log("Test");
-  },
-});
+const fs = require("fs");
+const {
+  readAllTask,
+  createTask,
+  readDetailTask,
+  updateTask,
+} = require("./model/task");
 
 // CRUD
 
@@ -29,9 +24,8 @@ yargs.command({
   },
   handler: (args) => {
     const { title, description } = args;
-    console.log("title: ", title);
-    console.log("description: ", description);
-    console.log("create");
+    const newTask = createTask(title, description);
+    console.log(`Đã tạo mới công việc thành công: `, newTask);
   },
 });
 
@@ -54,7 +48,12 @@ yargs.command({
   },
   handler: (args) => {
     const { id } = args;
-    console.log(id);
+    const task = readDetailTask(id);
+    if (task) {
+      console.log("task: ", task);
+    } else {
+      console.log("Not found");
+    }
   },
 });
 
@@ -74,8 +73,12 @@ yargs.command({
   },
   handler: (args) => {
     const { id, title, description } = args;
-    console.log(id, title, description);
-    console.log("update");
+    const task = updateTask(id, title, description);
+    if (task) {
+      console.log("Task updated", task);
+    } else {
+      console.log("Not Found!");
+    }
   },
 });
 
