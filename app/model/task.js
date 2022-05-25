@@ -46,9 +46,23 @@ const updateTask = (id, title, description) => {
   }
 };
 
+const removeTaskById = (id) => {
+  let taskList = readAllTask();
+  let index = taskList.findIndex((task) => task.id === id);
+  if (index != -1) {
+    const task = taskList[index];
+    let newTaskList = taskList.filter((task) => task.id !== id);
+    fs.writeFileSync("task.json", JSON.stringify(newTaskList));
+    return task;
+  } else {
+    return false;
+  }
+};
+
 module.exports = {
   readAllTask,
   createTask,
   readDetailTask,
   updateTask,
+  removeTaskById,
 };

@@ -2,11 +2,13 @@
 
 const yargs = require("yargs"); // ES5 ( common js )
 const fs = require("fs");
+const chalk = require("chalk");
 const {
   readAllTask,
   createTask,
   readDetailTask,
   updateTask,
+  removeTaskById,
 } = require("./model/task");
 
 // CRUD
@@ -34,7 +36,7 @@ yargs.command({
   command: "read-all",
   handler: () => {
     const result = readAllTask();
-    console.log(result);
+    console.log(chalk.blue("taskJson : "), result);
   },
 });
 
@@ -92,8 +94,12 @@ yargs.command({
   },
   handler: (args) => {
     const { id } = args;
-    console.log(`id : ${id}`);
-    console.log("delete success");
+    const task = removeTaskById(id);
+    if (task) {
+      console.log("Delete task: ", task);
+    } else {
+      console.log(chalk.red("Not found!"));
+    }
   },
 });
 
